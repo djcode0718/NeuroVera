@@ -82,18 +82,24 @@ def compute_gradcam(
         8. Convert to uint8 and return
     """
     try:
-        # Get the target layer
-        target_layer = model.get_layer(target_layer_name)
-        if target_layer is None:
-            raise RuntimeError(f"Layer '{target_layer_name}' not found in model")
-        
         logger.debug(f"Computing Grad-CAM for class {top_class_idx} using layer '{target_layer_name}'")
-        
-        # Create a model that outputs both the target layer and the final predictions
-        grad_model = tf.keras.Model(
-            inputs=model.inputs,
-            outputs=[target_layer.output, model.output]
-        )
+
+        # Rebuild the functional graph explicitly. Sequential models loaded via
+        # load_model() in Keras 3 don't retain call-history metadata, so
+        # target_layer.output raises "layer has never been called". Re-calling
+        # each layer on a fresh symbolic input rebuilds a proper graph.
+        inputs = tf.keras.Input(shape=model.input_shape[1:])
+        x = inputs
+        target_output = None
+        for layer in model.layers:
+            x = layer(x)
+            if layer.name == target_layer_name:
+                target_output = x
+
+        if target_output is None:
+            raise RuntimeError(f"Layer '{target_layer_name}' not found in model")
+
+        grad_model = tf.keras.Model(inputs=inputs, outputs=[target_output, x])
         
         # Compute gradients using GradientTape
         with tf.GradientTape() as tape:

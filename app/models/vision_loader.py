@@ -119,6 +119,7 @@ def load_vgg16_model(max_retries: int = 3, use_mock_on_failure: bool = False) ->
     
     # Possible filenames to try
     possible_filenames = [
+        "braintumor.h5",
         "vgg16_model.h5",
         "model.h5",
         "vgg16.h5",
@@ -138,7 +139,7 @@ def load_vgg16_model(max_retries: int = 3, use_mock_on_failure: bool = False) ->
                     model_filepath = hf_hub_download(
                         repo_id=model_id,
                         filename=filename,
-                        timeout=30
+                        # timeout=30
                     )
                     logger.info(f"Successfully downloaded {filename}")
                     break
