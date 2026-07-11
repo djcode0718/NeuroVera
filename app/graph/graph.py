@@ -181,6 +181,10 @@ def drafting_node(state: GraphState) -> GraphState:
     5. Populates state["drafting_output"] with revision_number tracking
     6. Returns updated state
     """
+    # Increment retry count if this is a revision pass
+    if state.get("critic_output") and state["critic_output"].get("verdict") == "revise":
+        state["critic_retry_count"] += 1
+        
     logger.info(f"Drafting node starting (retry_count={state['critic_retry_count']})")
     
     from app.agents.drafting import run_drafting_agent

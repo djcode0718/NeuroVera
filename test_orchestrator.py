@@ -381,7 +381,7 @@ class TestEndToEndOrchestrator:
         assert len(output["justification"]) > 0
         assert isinstance(output["reasoning_trace"], list)
         assert len(output["reasoning_trace"]) >= 1
-        assert output["model_used"] in ["vision-only", "no-llm", "groq/llama-3.1-8b-instant"]
+        assert output["model_used"] in ["vision-only", "no-llm", "groq/llama-3.1-8b-instant"] or output["model_used"].startswith("ollama/")
     
     def test_orchestrator_with_unresolved_issues(self):
         """Orchestrator routes to needs-review when issues unresolved"""

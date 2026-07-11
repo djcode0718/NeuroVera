@@ -26,7 +26,7 @@ from app.db.models import AnalysisRun, get_db_session
 from app.graph.graph import build_graph, build_initial_state
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/analyze", tags=["analysis"])
+router = APIRouter(tags=["analysis"])
 
 # Maximum file size: 20 MB
 MAX_FILE_SIZE = 20 * 1024 * 1024
@@ -59,7 +59,7 @@ class AnalysisResult(BaseModel):
     models_used: dict[str, str]
 
 
-@router.post("")
+@router.post("/analyze")
 async def analyze_mri(file: UploadFile = File(...)):
     """
     Accept MRI scan upload, run full analysis pipeline, and return results.

@@ -36,7 +36,11 @@ class TestCallLLMWithFallback:
         mock_ollama_instance.invoke.return_value = mock_response
         mock_ollama.return_value = mock_ollama_instance
         
-        with patch.dict("os.environ", {"OLLAMA_MODEL": "mistral"}):
+        with patch.dict("os.environ", {
+            "OLLAMA_MODEL": "mistral",
+            "GROQ_API_KEY": "",
+            "GEMINI_API_KEY": ""
+        }):
             response_text, model_used = call_llm_with_fallback(
                 system_prompt="Test system",
                 user_prompt="Test user"

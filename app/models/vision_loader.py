@@ -107,6 +107,12 @@ def load_vgg16_model(max_retries: int = 3, use_mock_on_failure: bool = False) ->
     if _MODEL is not None:
         logger.info("Returning cached VGG16 model")
         return _MODEL
+        
+    # In development mode, bypass download and use mock model directly
+    if os.getenv("NEUROTRIAGE_DEV_MODE", "false").lower() == "true":
+        logger.info("NEUROTRIAGE_DEV_MODE is true. Bypassing HuggingFace download and returning mock model.")
+        _MODEL = _create_mock_model()
+        return _MODEL
     
     model_id = "AyanKantiDas/BrainTumorVGG16"
     last_exception = None
@@ -162,7 +168,8 @@ def load_vgg16_model(max_retries: int = 3, use_mock_on_failure: bool = False) ->
                 time.sleep(backoff_seconds)
     
     # All retries exhausted
-    if use_mock_on_failure:
+    env_mock = os.getenv("NEUROTRIAGE_DEV_MODE", "false").lower() == "true"
+    if use_mock_on_failure or env_mock:
         logger.warning(
             f"Failed to load real VGG16 model after {max_retries} attempts. "
             f"Returning mock model for development. Last error: {str(last_exception)}"
