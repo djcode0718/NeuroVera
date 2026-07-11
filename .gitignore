@@ -72,7 +72,7 @@ Thumbs.db
 *.swp
 
 # --- Kiro ---
-.kiro/cache/
+.kiro/
 IMPLEMENTATION_SUMMARY*.md
 VERIFICATION_TASK*.md
 IMPLEMENTATION_SUMMARY_TASKS*.md
