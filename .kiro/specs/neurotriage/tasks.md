@@ -104,14 +104,14 @@ Each phase builds on the previous, with all tasks using `conda run -n neurotriag
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 5. Phase 3: LangGraph skeleton with Vision, Retrieval, Drafting, Orchestrator
-  - [~] 5.1 Set up LangGraph graph structure
+  - [x] 5.1 Set up LangGraph graph structure
     - Install `conda run -n neurotriage-env pip install langgraph langchain langchain-groq google-generativeai ollama`
     - Create `app/graph/graph.py` with `GraphState` TypedDict containing all fields from design
     - Define `build_graph()` function returning compiled `CompiledGraph`
     - Add nodes for: vision, retrieval, drafting, orchestrator (no critic yet)
     - _Requirements: 7.4_
 
-  - [~] 5.2 Implement Retrieval Agent with case bank query
+  - [x] 5.2 Implement Retrieval Agent with case bank query
     - Create `app/agents/retrieval.py` with `RetrievalOutput` TypedDict and `run_retrieval_agent(state)` function
     - Query SQLite `case_bank` table for entries matching `top_class`
     - Implement cosine similarity computation: `dot(a,b) / (norm(a) * norm(b))`
@@ -120,7 +120,7 @@ Each phase builds on the previous, with all tasks using `conda run -n neurotriag
     - Return empty lists if case bank has no entries (graceful degradation)
     - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-  - [~] 5.3 Implement Drafting Agent with LLM fallback chain
+  - [x] 5.3 Implement Drafting Agent with LLM fallback chain
     - Create `app/agents/drafting.py` with `DraftingOutput` TypedDict and `run_drafting_agent(state)` function
     - Implement LLM fallback chain: Groq → Gemini → Ollama
     - First pass: synthesize Vision + Retrieval into structured report with 6 sections (Classification, Confidence, Visual Evidence, Similar Cases, Clinical Notes, Caveats)
@@ -128,7 +128,7 @@ Each phase builds on the previous, with all tasks using `conda run -n neurotriag
     - Track which LLM model was used in `model_used` field
     - _Requirements: 5.1, 5.2, 5.5, 9.1, 9.2, 9.3_
 
-  - [~] 5.4 Implement Orchestrator Agent with routing logic
+  - [x] 5.4 Implement Orchestrator Agent with routing logic
     - Create `app/agents/orchestrator.py` with `OrchestratorOutput` TypedDict and `run_orchestrator_agent(state)` function
     - Implement routing rules: urgent if (glioma or pituitary) AND confidence > 0.75
     - Route to needs-review if 0.4 <= confidence <= 0.75

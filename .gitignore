@@ -73,6 +73,15 @@ Thumbs.db
 
 # --- Kiro ---
 .kiro/cache/
+IMPLEMENTATION_SUMMARY*.md
+VERIFICATION_TASK*.md
+IMPLEMENTATION_SUMMARY_TASKS*.md
+
+# --- Root-level test/verification files (temporary development only) ---
+test_*.py
+verify_*.py
+TASK_COMPLETION_*.md
+.pytest_cache/
 
 # --- Misc ---
 *.tmp
